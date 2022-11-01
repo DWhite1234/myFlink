@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration ><!--status="INFO"-->
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}  %-5level %t %C.%M - %msg%n"/>
+<!--            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+        </Console>
+<!--        <RollingFile name="LogFile" fileName="logs/app.log"-->
+<!--                     filePattern="/logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">-->
+<!--            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS}|%-5level|%t|%C.%M:%L|%msg%n"/>-->
+<!--            <SizeBasedTriggeringPolicy size="10 MB"/>-->
+<!--        </RollingFile>-->
+    </appenders>
+    <loggers>
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+<!--            <appender-ref ref="LogFile"/>-->
+        </root>
+        <logger name="com.spring" level="INFO" additivity="false">
+<!--            <appender-ref ref="LogFile" />-->
+            <appender-ref ref="Console"/>
+        </logger>
+    </loggers>
+</configuration>

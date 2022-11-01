@@ -11,7 +11,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  */
 @Data
 public class SpelUtil {
-    public static ThreadLocal<EvaluationContext> testContext = new ThreadLocal<>();
+    private static ThreadLocal<EvaluationContext> testContext = new ThreadLocal<>();
 
     private static void initThreadLocal() {
         if (testContext.get() == null) {
@@ -32,7 +32,8 @@ public class SpelUtil {
         getContext().setVariable(key, null);
     }
 
-    public static MapState<String, JSONObject> getModelAlgorithm() {
-        return (MapState<String, JSONObject>) getContext().lookupVariable("zs");
+    public static MapState<String, JSONObject> getState(String key) {
+        return (MapState<String, JSONObject>) getContext().lookupVariable(key);
     }
+
 }
