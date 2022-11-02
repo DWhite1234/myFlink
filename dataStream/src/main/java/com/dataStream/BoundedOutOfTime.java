@@ -13,6 +13,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zt
@@ -36,7 +37,7 @@ public class BoundedOutOfTime {
                                 })
                 )
                 .keyBy(Person::getName)
-                .window(TumblingEventTimeWindows.of(Time.seconds(5)))
+                .window(TumblingEventTimeWindows.of(Time.days(365)))
                 .process(new ProcessWindowFunction<Person, Person, String, TimeWindow>() {
                     @Override
                     public void process(String s, ProcessWindowFunction<Person, Person, String, TimeWindow>.Context context, Iterable<Person> iterable, Collector<Person> collector) throws Exception {
