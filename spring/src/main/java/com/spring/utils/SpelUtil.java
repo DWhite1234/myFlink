@@ -42,7 +42,6 @@ public class SpelUtil {
      * @return
      */
     public static boolean parseEl(String expression) {
-
         return BooleanUtils.isTrue(getParser().parseExpression(expression).getValue(getContext(),Boolean.class));
     }
 

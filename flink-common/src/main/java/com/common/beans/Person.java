@@ -13,5 +13,6 @@ public class Person {
     private Integer age;
     private String sex;
     private String className;
+    private Integer money;
     private Date ts;
 }
