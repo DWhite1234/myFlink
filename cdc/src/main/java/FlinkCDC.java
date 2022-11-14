@@ -3,7 +3,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.ververica.cdc.connectors.mysql.source.MySqlSource;
 import com.ververica.cdc.connectors.mysql.table.StartupOptions;
 import com.ververica.cdc.debezium.JsonDebeziumDeserializationSchema;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -12,8 +11,6 @@ import java.util.Properties;
 public class FlinkCDC {
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-//        env.getCheckpointConfig().setCheckpointStorage("file:///Users/zhongtao/disk/workspace/数动/ck");
-//        env.enableCheckpointing(3600000);
         env.setParallelism(1);
 
         Properties properties = new Properties();
