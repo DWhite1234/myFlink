@@ -27,6 +27,14 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.jdbc}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-streaming-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-clients</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
