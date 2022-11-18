@@ -17,14 +17,11 @@ import org.apache.flink.cep.pattern.conditions.SimpleCondition;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
-import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.OutputTag;
 
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
 
 /**
  * @author zt

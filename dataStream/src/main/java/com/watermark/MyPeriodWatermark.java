@@ -1,4 +1,4 @@
-package com.common.watermark;
+package com.watermark;
 
 import com.alibaba.fastjson.JSONObject;
 import com.common.beans.Person;

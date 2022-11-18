@@ -28,7 +28,7 @@ public class BoundedOutOfTime {
         env.socketTextStream("localhost", 999)
                 .map(data -> JSON.parseObject(data, Person.class))
                 .assignTimestampsAndWatermarks(
-                        WatermarkStrategy.<Person>forBoundedOutOfOrderness(Duration.ofSeconds(2))
+                        WatermarkStrategy.<Person>forBoundedOutOfOrderness(Duration.ofSeconds(5))
                                 .withTimestampAssigner(new SerializableTimestampAssigner<Person>() {
                                     @Override
                                     public long extractTimestamp(Person person, long l) {
@@ -37,7 +37,8 @@ public class BoundedOutOfTime {
                                 })
                 )
                 .keyBy(Person::getName)
-                .window(TumblingEventTimeWindows.of(Time.days(365)))
+                .window(TumblingEventTimeWindows.of(Time.seconds(10)))
+                .allowedLateness(Time.seconds(2))
                 .process(new ProcessWindowFunction<Person, Person, String, TimeWindow>() {
                     @Override
                     public void process(String s, ProcessWindowFunction<Person, Person, String, TimeWindow>.Context context, Iterable<Person> iterable, Collector<Person> collector) throws Exception {
