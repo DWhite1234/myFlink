@@ -9,6 +9,7 @@ import com.spring.utils.SpelUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.state.BroadcastState;
 import org.apache.flink.api.common.state.MapStateDescriptor;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.datastream.BroadcastStream;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -40,9 +41,16 @@ public class BroadCastTest {
         keyedStream.connect(broadcastStream)
                 .process(new KeyedBroadcastProcessFunction<String, Person, Person, Person>() {
 
+
+                    @Override
+                    public void open(Configuration parameters) throws Exception {
+
+                    }
+
                     @Override
                     public void processElement(Person value, KeyedBroadcastProcessFunction<String, Person, Person, Person>.ReadOnlyContext ctx, Collector<Person> out) throws Exception {
                         out.collect(value);
+
                     }
 
                     @Override
