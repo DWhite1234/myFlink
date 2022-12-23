@@ -46,7 +46,7 @@ public class GlobalState {
                                 return element.getTs().getTime();
                             }
                         }))
-                .keyBy(data -> data.getName())
+                .keyBy(Person::getName)
                 .window(TumblingEventTimeWindows.of(Time.seconds(10)))
                 .trigger(CountTrigger.of(1))
                 .process(new Test001(listState))

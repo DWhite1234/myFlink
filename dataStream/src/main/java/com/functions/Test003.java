@@ -9,6 +9,8 @@ import org.apache.flink.runtime.state.FunctionInitializationContext;
 import org.apache.flink.runtime.state.FunctionSnapshotContext;
 import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 
+import java.util.Map;
+
 /**
  * @author zt
  */
@@ -16,6 +18,7 @@ import org.apache.flink.streaming.api.checkpoint.CheckpointedFunction;
 public class Test003 extends RichMapFunction<Person,Person> implements CheckpointedFunction {
     private ListState<Person> listState;
     private ListStateDescriptor<Person> listStateDescriptor;
+    private static Map<String, Object> map;
 
     public Test003(ListStateDescriptor<Person> listStateDescriptor) {
         this.listStateDescriptor = listStateDescriptor;
