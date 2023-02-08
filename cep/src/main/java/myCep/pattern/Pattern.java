@@ -21,11 +21,11 @@ package myCep.pattern;
 import myCep.nfa.NFA;
 import myCep.nfa.aftermatch.AfterMatchSkipStrategy;
 import myCep.nfa.compiler.NFACompiler;
+import myCep.pattern.Quantifier.ConsumingStrategy;
+import myCep.pattern.Quantifier.Times;
 import myCep.pattern.conditions.*;
 import org.apache.flink.api.common.ExecutionConfig;
 import org.apache.flink.api.java.ClosureCleaner;
-import myCep.pattern.Quantifier.ConsumingStrategy;
-import myCep.pattern.Quantifier.Times;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.util.Preconditions;
 

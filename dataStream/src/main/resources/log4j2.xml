@@ -19,5 +19,9 @@
 <!--            <appender-ref ref="LogFile" />-->
             <appender-ref ref="Console"/>
         </logger>
+        <logger name="com.dataStream" level="INFO" additivity="false">
+            <!--            <appender-ref ref="LogFile" />-->
+            <appender-ref ref="Console"/>
+        </logger>
     </loggers>
 </configuration>

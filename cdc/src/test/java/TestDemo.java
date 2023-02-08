@@ -46,23 +46,12 @@ public class TestDemo {
         String password = "666666";
         Class.forName("oracle.jdbc.driver.OracleDriver");
         Connection conn = DriverManager.getConnection(url, username, password);
-        int num = 0;
-        while (true) {
-            conn.setAutoCommit(false);
-            if (id > 1000) {
-                break;
-            }
-            String sql = "update student set s_sex = '456' , s_birth = "+System.currentTimeMillis()+" where s_id = "+(++id);
-//            String sql = "insert into SDC_TEST.student values(" + (++id) + ",'zs',"+System.currentTimeMillis()+","+id+",'男')";
+        while (id>=2000) {
+//            String sql = "update student set s_sex = '456' , s_birth = "+System.currentTimeMillis()+" where s_id = "+(++id);
+            String sql = "insert into SDC_TEST.student values(" + (++id) + ",'zs',1,'男',"+System.currentTimeMillis()+")";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            boolean execute = preparedStatement.execute();
-            num++;
-            if (num >= 5) {
-                conn.commit();
-                num = 0;
-            }
-            count++;
-            System.out.println("成功发送条数:"+count);
+            preparedStatement.execute();
+            System.out.println("成功发送条数:"+(count++));
         }
     }
 }

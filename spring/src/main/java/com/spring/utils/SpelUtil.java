@@ -6,6 +6,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.flink.api.common.state.MapState;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.ParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
@@ -37,7 +38,7 @@ public class SpelUtil {
     }
 
     /**
-     * 解析el表达式
+     * 执行el表达式
      * @param expression
      * @return
      */
@@ -45,30 +46,35 @@ public class SpelUtil {
         return BooleanUtils.isTrue(getParser().parseExpression(expression).getValue(getContext(),Boolean.class));
     }
 
+
     /**
-     * 将对象存入CONTEXT
-     * @param key
-     * @param value
+     * 解析错误模版
+     * @param expression
+     * @return
+     */
+    public static String parseTemplate(String expression) {
+        return getParser().parseExpression(expression,ParserContext.TEMPLATE_EXPRESSION).getValue(getContext(),String.class);
+    }
+
+    /**
+     * set value
      */
     public static void setContextVariable(String key, Object value) {
         getContext().setVariable(key, value);
     }
 
     /**
-     *
-     * @param key
-     * @return
+     * get value
      */
     public static Object getContextVariable(String key) {
         return getContext().lookupVariable(key);
     }
 
+    /**
+     * remove value
+     */
     public static void removeContextVariable(String key) {
         getContext().setVariable(key, null);
-    }
-
-    public static MapState<String, JSONObject> getState(String key) {
-        return (MapState<String, JSONObject>) getContext().lookupVariable(key);
     }
 
 }

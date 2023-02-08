@@ -27,12 +27,12 @@ import myCep.pattern.GroupPattern;
 import myCep.pattern.MalformedPatternException;
 import myCep.pattern.Pattern;
 import myCep.pattern.Quantifier;
+import myCep.pattern.Quantifier.Times;
 import myCep.pattern.conditions.BooleanConditions;
 import myCep.pattern.conditions.IterativeCondition;
 import myCep.pattern.conditions.RichAndCondition;
 import myCep.pattern.conditions.RichNotCondition;
 import org.apache.flink.api.java.tuple.Tuple2;
-import myCep.pattern.Quantifier.Times;
 import org.apache.flink.streaming.api.windowing.time.Time;
 
 import java.io.Serializable;

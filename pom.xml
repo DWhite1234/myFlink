@@ -14,7 +14,7 @@
         <module>flink-common</module>
         <module>dataStream</module>
         <module>spring</module>
-        <module>java-test</module>
+        <module>javaUtils</module>
         <module>cdc</module>
     </modules>
 
@@ -26,12 +26,19 @@
         <lombok.version>1.18.24</lombok.version>
         <log4j.version>2.17.1</log4j.version>
         <json.version>1.2.83</json.version>
-        <spring.el.version>5.2.1.RELEASE</spring.el.version>
+        <spring.version>5.2.1.RELEASE</spring.version>
         <junit.version>4.13.2</junit.version>
+        <durid.version>1.1.10</durid.version>
+        <websocket.version>1.5.2</websocket.version>
     </properties>
 
 <!--    全局共享依赖 -->
     <dependencies>
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>${websocket.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -61,6 +68,16 @@
 <!--    各个模块单独指定依赖 -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-statebackend-rocksdb</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${durid.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-table-api-java-bridge</artifactId>
@@ -94,7 +111,12 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-expression</artifactId>
-                <version>${spring.el.version}</version>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -18,13 +18,13 @@
 
 package myCep.nfa.sharedbuffer;
 
+import myCep.nfa.sharedbuffer.SharedBufferEdge.SharedBufferEdgeSerializer;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.typeutils.CompositeTypeSerializerSnapshot;
 import org.apache.flink.api.common.typeutils.TypeSerializer;
 import org.apache.flink.api.common.typeutils.TypeSerializerSnapshot;
 import org.apache.flink.api.common.typeutils.base.ListSerializer;
 import org.apache.flink.api.common.typeutils.base.TypeSerializerSingleton;
-import myCep.nfa.sharedbuffer.SharedBufferEdge.SharedBufferEdgeSerializer;
 import org.apache.flink.core.memory.DataInputView;
 import org.apache.flink.core.memory.DataOutputView;
 import org.apache.flink.runtime.state.KeyedStateBackend;
