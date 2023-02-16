@@ -3,7 +3,7 @@ package com.cep.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cep.functions.CepPatternProcessFunction_001;
-import com.common.watermark.MyPeriodWatermark;
+import com.zt.flink.ds.watermark.MyPeriodWatermark;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkGenerator;

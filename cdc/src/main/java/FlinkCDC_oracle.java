@@ -48,48 +48,48 @@ public class FlinkCDC_oracle {
                 .debeziumProperties(properties)
                 .deserializer(new JsonDebeziumDeserializationSchema())
                 .build();
-        env.addSource(sourceFunction)
-                .map(JSON::parseObject)
-                .assignTimestampsAndWatermarks(
-                        WatermarkStrategy.<JSONObject>forBoundedOutOfOrderness(Duration.ofSeconds(5))
-                                .withTimestampAssigner(new SerializableTimestampAssigner<JSONObject>() {
-                                    @Override
-                                    public long extractTimestamp(JSONObject element, long recordTimestamp) {
-                                        return (Long) element.getLong("ts_ms");
-                                    }
-                                }))
-                .windowAll(TumblingEventTimeWindows.of(Time.hours(1)))
-                .trigger(CountTrigger.of(1))
-                .process(new ProcessAllWindowFunction<JSONObject, Integer, TimeWindow>() {
-                    @Override
-                    public void process(ProcessAllWindowFunction<JSONObject, Integer, TimeWindow>.Context context, Iterable<JSONObject> elements, Collector<Integer> out) throws Exception {
-                        int sum = 0;
-                        for (JSONObject element : elements) {
-                            sum += 1;
-                        }
-                        out.collect(sum);
-                    }
-                })
-                .print();
-
-
 //        env.addSource(sourceFunction)
-//                .map(new MapFunction<String, String>() {
-//                    private Integer count = 0;
-//                    private Long sum = 0L;
-//
+//                .map(JSON::parseObject)
+//                .assignTimestampsAndWatermarks(
+//                        WatermarkStrategy.<JSONObject>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+//                                .withTimestampAssigner(new SerializableTimestampAssigner<JSONObject>() {
+//                                    @Override
+//                                    public long extractTimestamp(JSONObject element, long recordTimestamp) {
+//                                        return (Long) element.getLong("ts_ms");
+//                                    }
+//                                }))
+//                .windowAll(TumblingEventTimeWindows.of(Time.hours(1)))
+//                .trigger(CountTrigger.of(1))
+//                .process(new ProcessAllWindowFunction<JSONObject, Integer, TimeWindow>() {
 //                    @Override
-//                    public String map(String value) throws Exception {
-//                        JSONObject jsonObject = JSON.parseObject(value);
-//                        System.out.println("jsonObject = " + jsonObject);
-//                        JSONObject after = JSON.parseObject(jsonObject.get("after").toString());
-//                        Long ts_ms = after.getLong("S_BIRTH");
-//                        long currentTimeMillis = System.currentTimeMillis();
-//                        sum += (currentTimeMillis - ts_ms);
-//                        count++;
-//                        return "解析数据:" + count + ",总延迟:" + sum + ",当前解析延迟:" + (currentTimeMillis - ts_ms) + ",平均延迟:" + (sum / count * 1.0);
+//                    public void process(ProcessAllWindowFunction<JSONObject, Integer, TimeWindow>.Context context, Iterable<JSONObject> elements, Collector<Integer> out) throws Exception {
+//                        int sum = 0;
+//                        for (JSONObject element : elements) {
+//                            sum += 1;
+//                        }
+//                        out.collect(sum);
 //                    }
-//                }).print();
+//                })
+//                .print();
+
+
+        env.addSource(sourceFunction)
+                .map(new MapFunction<String, String>() {
+                    private Integer count = 0;
+                    private Long sum = 0L;
+
+                    @Override
+                    public String map(String value) throws Exception {
+                        JSONObject jsonObject = JSON.parseObject(value);
+                        System.out.println("jsonObject = " + jsonObject);
+                        JSONObject after = JSON.parseObject(jsonObject.get("after").toString());
+                        Long ts_ms = after.getLong("S_BIRTH");
+                        long currentTimeMillis = System.currentTimeMillis();
+                        sum += (currentTimeMillis - ts_ms);
+                        count++;
+                        return "解析数据:" + count + ",总延迟:" + sum + ",当前解析延迟:" + (currentTimeMillis - ts_ms) + ",平均延迟:" + (sum / count * 1.0);
+                    }
+                }).print();
 
 
         env.execute();
