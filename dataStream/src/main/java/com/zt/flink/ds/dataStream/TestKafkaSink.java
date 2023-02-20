@@ -17,7 +17,7 @@ public class TestKafkaSink {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-        String url = "172.1.2.215:8081,172.1.2.215:8082,172.1.2.215:8083";
+        String url = "172.1.2.245:8081,172.1.2.215:8082,172.1.2.215:8083";
         KafkaSink<String> kafkaSink = KafkaSink.<String>builder()
                 .setBootstrapServers(url)
                 .setRecordSerializer(

@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>flink-common</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.flink</groupId>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>dataStream</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

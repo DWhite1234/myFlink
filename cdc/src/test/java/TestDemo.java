@@ -1,9 +1,11 @@
+import com.zt.flink.java.utils.RandomUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.util.Random;
 
 /**
  * @author zt
@@ -53,5 +55,11 @@ public class TestDemo {
             preparedStatement.execute();
             System.out.println("成功发送条数:"+(count++));
         }
+    }
+
+
+    @Test
+    public void test01() {
+        System.out.println(RandomUtils.getRange(5, 6));
     }
 }
