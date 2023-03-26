@@ -5,9 +5,16 @@ import io.minio.MinioClient;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.shaded.jackson2.org.yaml.snakeyaml.Yaml;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 /**
@@ -68,5 +75,22 @@ public class YmlUtils {
         Yaml yaml = new Yaml();
         Object load = yaml.load(inputStream);
         return (Map<String, String>) load;
+    }
+
+    public static Map<String, String> getHdfsFile(String hdfsUrl) {
+        try {
+            Yaml yaml = new Yaml();
+            Path path = new Path(hdfsUrl);
+            Configuration conf = new Configuration();
+            conf.set("fs.defaultFS",hdfsUrl);
+            FileSystem fileSystem = path.getFileSystem(conf);
+            FSDataInputStream fsDataInputStream = fileSystem.open(path);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fsDataInputStream));
+            Object load = yaml.load(bufferedReader);
+            return (Map<String, String>) load;
+        } catch (IOException e) {
+            log.info("hdfs 文件系统异常");
+        }
+        return null;
     }
 }

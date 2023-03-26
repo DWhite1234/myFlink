@@ -12,8 +12,10 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
  * @author zt
  */
 @Slf4j
-public class MyIntervalTrigger extends Trigger<Person, TimeWindow> {
+public class MyWindowIntervalTrigger extends Trigger<Person, TimeWindow> {
     private ValueStateDescriptor<Long> valueStateDescriptor = new ValueStateDescriptor<Long>("timer", Long.class);
+
+
 
     @Override
     public TriggerResult onElement(Person element, long timestamp, TimeWindow window, TriggerContext ctx) throws Exception {
@@ -37,7 +39,6 @@ public class MyIntervalTrigger extends Trigger<Person, TimeWindow> {
         if (ctx.getCurrentWatermark()<window.maxTimestamp()) {
             Timer.nextTime = System.currentTimeMillis()+5000;
             ctx.registerProcessingTimeTimer(Timer.nextTime);
-            log.info("触发器触发:watermark:{},max:{}",ctx.getCurrentWatermark(),window.maxTimestamp());
         }
         return TriggerResult.FIRE;
     }

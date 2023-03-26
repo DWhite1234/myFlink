@@ -10,12 +10,14 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
  */
 
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-        new FlinkKafkaProducer<String>("", "", new SimpleStringSchema());
-        DataStreamSink<String> streamSink = env.fromElements("1")
-                .addSink(new TwoStageKafkaSink(null,null));
+        env.socketTextStream("localhost",999)
+                .keyBy(data->data)
+                .addSink(new CustomSink());
+
+        env.execute();
     }
 }

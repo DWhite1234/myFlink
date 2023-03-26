@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.common.beans.Person;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.windowing.triggers.CountTrigger;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
@@ -45,7 +47,7 @@ public class EventTimeWindow {
         env.socketTextStream("localhost", 999)
                 .map(data -> JSON.parseObject(data, Person.class))
                 .assignTimestampsAndWatermarks(
-                        WatermarkStrategy.<Person>forBoundedOutOfOrderness(Duration.ofSeconds(5))
+                        WatermarkStrategy.<Person>forBoundedOutOfOrderness(Duration.ZERO)
                                 .withTimestampAssigner(new SerializableTimestampAssigner<Person>() {
                                     @Override
                                     public long extractTimestamp(Person element, long recordTimestamp) {
@@ -56,15 +58,17 @@ public class EventTimeWindow {
                 .keyBy(Person::getName)
                 .window(TumblingEventTimeWindows.of(Time.seconds(10)))
 //                .trigger(new MyIntervalTrigger())
-                .allowedLateness(Time.seconds(3))
+//                .allowedLateness(Time.seconds(3))
+                .trigger(CountTrigger.of(1))
                 .process(new ProcessWindowFunction<Person, String, String, TimeWindow>() {
                     @Override
+                    public void open(Configuration parameters) throws Exception {
+                        System.out.println("初始化类");
+                    }
+
+                    @Override
                     public void process(String s, ProcessWindowFunction<Person, String, String, TimeWindow>.Context context, Iterable<Person> elements, Collector<String> out) throws Exception {
-                        int sum = 0;
-                        for (Person element : elements) {
-                            sum += element.getMoney();
-                        }
-                        out.collect("金额:"+sum);
+                        out.collect("金额:"+1);
                     }
                 })
                 .print();

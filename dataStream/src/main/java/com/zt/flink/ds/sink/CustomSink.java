@@ -1,8 +1,14 @@
 package com.zt.flink.ds.sink;
 
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.api.common.state.CheckpointListener;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ListStateDescriptor;
+import org.apache.flink.api.common.state.MapState;
+import org.apache.flink.api.common.state.MapStateDescriptor;
+import org.apache.flink.api.common.state.ValueState;
+import org.apache.flink.api.common.state.ValueStateDescriptor;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.runtime.state.FunctionInitializationContext;
 import org.apache.flink.runtime.state.FunctionSnapshotContext;
@@ -16,22 +22,37 @@ import java.util.List;
  * @author zt
  * @{date}
  */
-
+@Slf4j
 public class CustomSink extends RichSinkFunction<String> implements CheckpointedFunction, CheckpointListener {
     //从ck中恢复的数据
     private ListState<String> restoreListState;
+    private MapState<String, String> mapState;
+    private ValueState<String> valueState;
     private List<String> list;
 
     @Override
     public void open(Configuration parameters) throws Exception {
+        ListStateDescriptor<String> listDesc = new ListStateDescriptor<>("lsit", String.class);
+        restoreListState = getRuntimeContext().getListState(listDesc);
+
+        MapStateDescriptor<String, String> map = new MapStateDescriptor<>("map", String.class, String.class);
+        mapState = getRuntimeContext().getMapState(map);
+
+        ValueStateDescriptor<String> valueStateDescriptor = new ValueStateDescriptor<>("value", String.class);
+        valueState = getRuntimeContext().getState(valueStateDescriptor);
         //初始化发送失败的数据存放list
-        list = new ArrayList<>();
+        this.list = new ArrayList<>();
     }
+
 
     @Override
     public void invoke(String value, Context context) throws Exception {
         //具体的逻辑处理
+        restoreListState.add("1");
+        mapState.put("1", "1");
+        valueState.update("1");
 
+        log.info("listState:{},mapState:{},valueState:{}",restoreListState.get(),mapState.entries(),valueState.value());
         //如果发送失败,存入list中
         list.add(value);
     }
