@@ -9,8 +9,11 @@ import org.apache.commons.collections.KeyValue;
 import org.apache.flink.api.common.RuntimeExecutionMode;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.connector.sink2.Sink;
 import org.apache.flink.api.connector.sink2.SinkWriter;
+import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.streaming.api.functions.KeyedProcessFunction;
 import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.streaming.api.functions.sink.SinkFunction;
@@ -24,11 +27,13 @@ import org.apache.flink.streaming.api.windowing.triggers.ContinuousProcessingTim
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.streaming.runtime.operators.windowing.TimestampedValue;
 import org.apache.flink.util.Collector;
+import org.apache.kafka.clients.consumer.OffsetResetStrategy;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 /**
  * @author zt
@@ -38,16 +43,25 @@ public class Test extends BaseApplication {
     public static void main(String[] args) throws Exception {
         configureStreamExecutionEnvironment(args);
         env.setParallelism(1);
-        env.socketTextStream("localhost", 999)
+        KafkaSource<String> kafkaSource = KafkaSource.<String>builder()
+                .setBootstrapServers("172.1.2.215:8081,172.1.2.215:8082,172.1.2.215:8083")
+                .setTopicPattern(Pattern.compile(String.format("[a-zA-Z]*[\\.]%s|%s", "MESSAGE-STATISTIC", "MESSAGE-STATISTIC")))
+                .setGroupId("test-001")
+                .setStartingOffsets(OffsetsInitializer.committedOffsets(OffsetResetStrategy.LATEST))
+                .setValueOnlyDeserializer(new SimpleStringSchema())
+                .build();
+        // env.socketTextStream("localhost", 999)
+        env.fromSource(kafkaSource,WatermarkStrategy.noWatermarks(),"kafka")
                 .map(data -> JSON.parseObject(data, Person.class))
                 .assignTimestampsAndWatermarks(
-                        WatermarkStrategy.<Person>forBoundedOutOfOrderness(Duration.ofMinutes(1))
+                        WatermarkStrategy.<Person>forBoundedOutOfOrderness(Duration.ZERO)
                                 .withTimestampAssigner(new SerializableTimestampAssigner<Person>() {
                                     @Override
                                     public long extractTimestamp(Person element, long recordTimestamp) {
                                         return element.getTs().getTime();
                                     }
                                 })
+                                .withIdleness(Duration.ofMinutes(1))
                 )
                 .keyBy(Person::getName)
                 .window(TumblingEventTimeWindows.of(Time.minutes(1)))

@@ -9,7 +9,6 @@
     <packaging>pom</packaging>
     <version>${revision}</version>
     <modules>
-        <module>cep</module>
         <module>flink-common</module>
         <module>dataStream</module>
         <module>javaUtils</module>
