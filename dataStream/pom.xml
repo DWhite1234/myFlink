@@ -39,11 +39,12 @@
             <groupId>org.example</groupId>
             <artifactId>javaUtils</artifactId>
             <version>${revision}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>k8s-flink-test</finalName>
+        <finalName>flink-test</finalName>
         <plugins>
             <!-- 编译插件 -->
             <plugin>

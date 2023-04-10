@@ -38,6 +38,7 @@ public class MainTest {
                     @Override
                     public String map(String value) throws Exception {
                         log.info("当前随机数为:{}",RandomUtils.getRange(0, 10));
+                        System.out.println("当前随机数为:"+RandomUtils.getRange(0, 10));
                         return value;
                     }
                 })
