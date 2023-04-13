@@ -30,8 +30,6 @@ public class RestSubmit {
                 .setArguments(args)
                 .build();
 
-
-
         Configuration configuration = new Configuration();
         configuration.setString(JobManagerOptions.ADDRESS, "172.1.2.202");
         configuration.setInteger(JobManagerOptions.PORT, 6123);
