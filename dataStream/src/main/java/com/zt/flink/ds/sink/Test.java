@@ -2,10 +2,7 @@ package com.zt.flink.ds.sink;
 
 import com.alibaba.fastjson.JSON;
 import com.common.beans.Person;
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
-import org.apache.flink.streaming.api.datastream.DataStreamSink;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 
 /**
  * @author zt

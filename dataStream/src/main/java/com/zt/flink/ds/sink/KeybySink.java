@@ -1,10 +1,8 @@
 package com.zt.flink.ds.sink;
 
-import com.alibaba.fastjson.JSONObject;
 import com.common.beans.Person;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;
-import sun.util.locale.provider.LocaleServiceProviderPool;
 
 /**
  * @author zt

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.common.beans.Person;
 import com.zt.flink.ds.io.AsyncFunction;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.datastream.AsyncDataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.KeyedStream;
