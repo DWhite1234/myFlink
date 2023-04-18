@@ -26,14 +26,6 @@ public class Demo {
 
     @Test
     public void test0002() {
-        Person person = new Person();
-        person.setTs(new Date());
-        boolean b = System.currentTimeMillis() % 2 == 0;
-        if (b) {
-            person.setName("zs");
-        }else{
-            person.setName("ls");
-        }
-        System.out.println(JSON.toJSONString(person));
+        System.out.println(Long.MAX_VALUE);
     }
 }

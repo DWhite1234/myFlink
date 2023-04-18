@@ -11,10 +11,10 @@
 <!--        </RollingFile>-->
     </appenders>
     <loggers>
-<!--        <root level="INFO">-->
-<!--            <appender-ref ref="Console"/>-->
-<!--&lt;!&ndash;            <appender-ref ref="LogFile"/>&ndash;&gt;-->
-<!--        </root>-->
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+<!--            <appender-ref ref="LogFile"/>-->
+        </root>
 <!--        <logger name="com.dataStream" level="INFO" additivity="false">-->
 <!--&lt;!&ndash;            <appender-ref ref="LogFile" />&ndash;&gt;-->
 <!--            <appender-ref ref="Console"/>-->

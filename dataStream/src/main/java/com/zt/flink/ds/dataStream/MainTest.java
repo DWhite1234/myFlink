@@ -18,27 +18,27 @@ public class MainTest {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-//        env.socketTextStream("localhost",999)
-//                .map(new MapFunction<String, String>() {
-//                    @Override
-//                    public String map(String value) throws Exception {
-//                        log.info("当前随机数为:{}",RandomUtils.getRange(0, 10));
-//                        System.out.println("当前随机数为:"+RandomUtils.getRange(0, 10));
-//                        return value;
-//                    }
-//                })
-//                .print();
-
-        KafkaSource<String> kafkaSource = KafkaSource.<String>builder()
-                .setBootstrapServers("172.1.2.215:8081,172.1.2.215:8082,172.1.2.215:8083")
-                .setTopics("111")
-                .setGroupId("test")
-                .setStartingOffsets(OffsetsInitializer.latest())
-                .setValueOnlyDeserializer(new SimpleStringSchema())
-                .build();
-
-        env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "kafka")
+        env.socketTextStream("localhost",999)
+                .map(new MapFunction<String, String>() {
+                    @Override
+                    public String map(String value) throws Exception {
+                        log.info("当前随机数为:{}",RandomUtils.getRange(0, 10));
+                        System.out.println("当前随机数为:"+RandomUtils.getRange(0, 10));
+                        return value;
+                    }
+                })
                 .print();
+
+//        KafkaSource<String> kafkaSource = KafkaSource.<String>builder()
+//                .setBootstrapServers("172.1.2.215:8081,172.1.2.215:8082,172.1.2.215:8083")
+//                .setTopics("111")
+//                .setGroupId("test")
+//                .setStartingOffsets(OffsetsInitializer.latest())
+//                .setValueOnlyDeserializer(new SimpleStringSchema())
+//                .build();
+
+//        env.fromSource(kafkaSource, WatermarkStrategy.noWatermarks(), "kafka")
+//                .print();
 
         env.execute();
     }
